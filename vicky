@@ -1,0 +1,48 @@
+// countdown.js
+
+import React, { useState, useEffect } from "react";
+
+const Countdown = () => {
+  const [timeLeft, setTimeLeft] = useState("");
+
+  useEffect(() => {
+    const updateCountdown = () => {
+      let now = new Date();
+      let tomorrow = new Date();
+      tomorrow.setDate(now.getDate() + 1);
+      tomorrow.setHours(0, 0, 0, 0);
+      
+      let diff = tomorrow - now;
+      let hours = Math.floor(diff / (1000 * 60 * 60));
+      let minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      let seconds = Math.floor((diff % (1000 * 60)) / 1000);
+      
+      setTimeLeft(`${hours}h ${minutes}m ${seconds}s`);
+    };
+
+    updateCountdown();
+    const interval = setInterval(updateCountdown, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+   <div style={{
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      height: "100vh",
+      textAlign: "center",
+      color: "white",
+      fontFamily: "Arial, sans-serif",
+      backgroundColor: "black"
+    }}>
+      <div style={{ background: "rgba(0, 0, 0, 0.6)", padding: "20px", borderRadius: "10px" }}>
+        <h1>Noooo don't turn 26 ur too sexy</h1>
+        <div style={{ fontSize: "48px", fontWeight: "bold" }}>{timeLeft}</div>
+      </div>
+    </div>
+  );
+};
+
+export default Countdown;
