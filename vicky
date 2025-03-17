@@ -1,48 +1,64 @@
-// countdown.js
-
-import React, { useState, useEffect } from "react";
-
-const Countdown = () => {
-  const [timeLeft, setTimeLeft] = useState("");
-
-  useEffect(() => {
-    const updateCountdown = () => {
-      let now = new Date();
-      let tomorrow = new Date();
-      tomorrow.setDate(now.getDate() + 1);
-      tomorrow.setHours(0, 0, 0, 0);
-      
-      let diff = tomorrow - now;
-      let hours = Math.floor(diff / (1000 * 60 * 60));
-      let minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-      let seconds = Math.floor((diff % (1000 * 60)) / 1000);
-      
-      setTimeLeft(`${hours}h ${minutes}m ${seconds}s`);
-    };
-
-    updateCountdown();
-    const interval = setInterval(updateCountdown, 1000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  return (
-   <div style={{
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      height: "100vh",
-      textAlign: "center",
-      color: "white",
-      fontFamily: "Arial, sans-serif",
-      backgroundColor: "black"
-    }}>
-      <div style={{ background: "rgba(0, 0, 0, 0.6)", padding: "20px", borderRadius: "10px" }}>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown Timer</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            border-radius: 10px;
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        #countdown {
+            font-size: 48px;
+            font-weight: bold;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
         <h1>Noooo don't turn 26 ur too sexy</h1>
-        <div style={{ fontSize: "48px", fontWeight: "bold" }}>{timeLeft}</div>
-      </div>
+        <div id="countdown"></div>
     </div>
-  );
-};
-
-export default Countdown;
+    <script>
+        function updateCountdown() {
+            let now = new Date();
+            let tomorrow = new Date();
+            tomorrow.setDate(now.getDate() + 1);
+            tomorrow.setHours(0, 0, 0, 0);
+            
+            let diff = tomorrow - now;
+            let hours = String(Math.floor(diff / (1000 * 60 * 60))).padStart(2, '0');
+            let minutes = String(Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+            let seconds = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, '0');
+            
+            document.getElementById("countdown").innerText = `${hours}h ${minutes}m ${seconds}s`;
+            
+            if (diff > 0) {
+                setTimeout(updateCountdown, 1000);
+            } else {
+                document.getElementById("countdown").innerText = "Time's up!";
+            }
+        }
+        updateCountdown();
+    </script>
+</body>
+</html>
